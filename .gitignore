@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment variables — never commit real keys
+backend/.env
+
+# SQLite database
+backend/data/
+
+# Frontend build output
+frontend/dist/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
