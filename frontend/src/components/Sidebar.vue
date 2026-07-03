@@ -73,6 +73,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { apiFetch } from '../api.js';
 
 const route = useRoute();
 const agents = ref([]);
@@ -92,7 +93,7 @@ function getAgentStatusColor(avgScore) {
 
 async function loadAgents() {
   try {
-    const res = await fetch('/api/agents');
+    const res = await apiFetch('/api/agents');
     if (!res.ok) throw new Error('Failed to fetch agents');
     agents.value = await res.json();
   } catch (err) {

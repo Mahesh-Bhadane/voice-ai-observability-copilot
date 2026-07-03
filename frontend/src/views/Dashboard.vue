@@ -154,6 +154,7 @@
 import { ref, computed, onMounted } from 'vue';
 import KpiCard from '../components/KpiCard.vue';
 import ScoreBadge from '../components/ScoreBadge.vue';
+import { apiFetch } from '../api.js';
 
 const agents = ref([]);
 const loading = ref(true);
@@ -176,7 +177,7 @@ async function loadData() {
   loading.value = true;
   error.value = null;
   try {
-    const res = await fetch('/api/agents');
+    const res = await apiFetch('/api/agents');
     if (!res.ok) throw new Error(`Server error: ${res.status}`);
     agents.value = await res.json();
   } catch (err) {
@@ -190,7 +191,7 @@ async function seedData() {
   seeding.value = true;
   seedMessage.value = '';
   try {
-    const res = await fetch('/api/seed', { method: 'POST' });
+    const res = await apiFetch('/api/seed', { method: 'POST' });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Seed failed');
     seedMessage.value = data.message + ' Reloading data...';

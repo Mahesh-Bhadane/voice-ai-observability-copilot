@@ -232,6 +232,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ScoreBadge from '../components/ScoreBadge.vue';
+import { apiFetch } from '../api.js';
 
 const route = useRoute();
 const agent = ref(null);
@@ -281,7 +282,7 @@ async function loadAgent() {
   loading.value = true;
   error.value = null;
   try {
-    const res = await fetch(`/api/agents/${route.params.id}`);
+    const res = await apiFetch(`/api/agents/${route.params.id}`);
     if (!res.ok) throw new Error(`Agent not found`);
     agent.value = await res.json();
   } catch (err) {
@@ -294,7 +295,7 @@ async function loadAgent() {
 async function loadCalls(page = 1) {
   loadingCalls.value = true;
   try {
-    const res = await fetch(`/api/agents/${route.params.id}/calls?page=${page}&limit=20`);
+    const res = await apiFetch(`/api/agents/${route.params.id}/calls?page=${page}&limit=20`);
     if (!res.ok) throw new Error('Failed to load calls');
     callsData.value = await res.json();
   } catch (err) {
@@ -307,7 +308,7 @@ async function loadCalls(page = 1) {
 async function loadRecommendations() {
   loadingRecs.value = true;
   try {
-    const res = await fetch(`/api/agents/${route.params.id}/recommendations`);
+    const res = await apiFetch(`/api/agents/${route.params.id}/recommendations`);
     if (!res.ok) throw new Error('Failed to load recommendations');
     recommendations.value = await res.json();
   } catch (err) {
@@ -320,7 +321,7 @@ async function loadRecommendations() {
 async function regenerateRecommendations() {
   regenerating.value = true;
   try {
-    const res = await fetch(`/api/analyze/agent/${route.params.id}/recommendations`, { method: 'POST' });
+    const res = await apiFetch(`/api/analyze/agent/${route.params.id}/recommendations`, { method: 'POST' });
     if (!res.ok) throw new Error('Failed to generate recommendations');
     await loadRecommendations();
   } catch (err) {

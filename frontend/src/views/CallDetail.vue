@@ -219,6 +219,7 @@ import { useRoute } from 'vue-router';
 import ScoreBadge from '../components/ScoreBadge.vue';
 import FlagBadge from '../components/FlagBadge.vue';
 import TranscriptViewer from '../components/TranscriptViewer.vue';
+import { apiFetch } from '../api.js';
 
 const route = useRoute();
 const call = ref(null);
@@ -242,7 +243,7 @@ async function loadCall() {
   loading.value = true;
   error.value = null;
   try {
-    const res = await fetch(`/api/calls/${route.params.id}`);
+    const res = await apiFetch(`/api/calls/${route.params.id}`);
     if (!res.ok) throw new Error('Call not found');
     call.value = await res.json();
   } catch (err) {
@@ -255,7 +256,7 @@ async function loadCall() {
 async function runAnalysis() {
   analyzing.value = true;
   try {
-    const res = await fetch(`/api/analyze/${route.params.id}`, { method: 'POST' });
+    const res = await apiFetch(`/api/analyze/${route.params.id}`, { method: 'POST' });
     if (!res.ok) throw new Error('Analysis failed');
     await loadCall();
   } catch (err) {
